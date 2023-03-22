@@ -65,4 +65,4 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: ${{ always() }} # Test 성공/실패 유무 상관없이 Report 작성
       with:
-        files: build/test-results/test/*.xml
+        files: ${{ github.workspace }}/build/test-results/test/*.xml
