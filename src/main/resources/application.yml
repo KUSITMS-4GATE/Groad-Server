@@ -5,6 +5,11 @@ spring:
     username: ENC(S5A9pDlZUuUg4NwxT1jz+A==)
     password: ENC(VMDLe9N7rd1ZLFElTD97POJHg9Qt3f61)
 
+  jasypt:
+    encryptor:
+      password:
+      bean: jasyptStringEncryptor
+
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
