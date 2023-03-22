@@ -49,16 +49,16 @@ jobs:
       run: chmod +x gradlew
       
     # (5) secret 파일 복사
-    - name: Copy Secret
-      env:
-        OCCUPY_SECRET: ${{ secrets.DEV_RDS }}
-        OCCUPY_SECRET_DIR: src/main/resources
-        OCCUPY_SECRET_DIR_FILE_NAME: secret.yml
-      run: echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
+#     - name: Copy Secret
+#       env:
+#         OCCUPY_SECRET: ${{ secrets.DEV_RDS }}
+#         OCCUPY_SECRET_DIR: src/main/resources
+#         OCCUPY_SECRET_DIR_FILE_NAME: secret.yml
+#       run: echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
       
     # (6) Test Application
     - name: Test with Gradle # test application build
-      run: ./gradlew test
+      run: ./gradlew test -Djasypt.encryptor.password=${{secrets.JASYPT_PASSWORD}}
 
     # (7) Test Result Check
     - name: Publish Unit Test Results 
