@@ -14,8 +14,7 @@ on:
       - "main"
       - "dev"
 
-permissions:
-  contents: write-all
+permissions: write-all
 
 jobs:
   build:
