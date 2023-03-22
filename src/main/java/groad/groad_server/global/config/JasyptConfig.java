@@ -9,10 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile({"dev","real"})
 public class JasyptConfig {
 
-    @Value("${encryptor.key}")
+    @Value("${jasypt.encryptor.password}")
     private String password;
 
     @Bean("jasyptStringEncryptor")
@@ -28,7 +27,6 @@ public class JasyptConfig {
         config.setIvGeneratorClassName("org.jasypt.iv.NoIvGenerator");
         config.setStringOutputType("base64");
         encryptor.setConfig(config);
-
         return encryptor;
     }
 }
