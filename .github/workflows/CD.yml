@@ -74,5 +74,7 @@ jobs:
             docker stop groad-server
             docker rm groad-server
             sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/groad-server
-            sudo docker-compose up -d
             docker rmi -f $(docker images -f "dangling=true" -q)
+#            레디스와 함께 추가 예정
+#            sudo docker-compose up -d
+
