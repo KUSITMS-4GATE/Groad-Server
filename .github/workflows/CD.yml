@@ -1,0 +1,78 @@
+name: CD
+
+on:
+  push:
+    branches: 
+      - "dev" 
+      - "main"
+  # 확인 후 삭제
+  pull_request:
+    branches: 
+      - "main"
+      - "dev"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    # (1) Check out
+    - uses: actions/checkout@v3
+    
+    # (2) JDK 세팅
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+     
+    # (3) gradle 캐싱
+    - name: Gradle Caching
+      uses: actions/cache@v3
+      with:
+        path: |  
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+            ${{ runner.os }}-gradle-
+    
+    # (4) gradlew 실행 권한 부여
+    - name: Grant Execute Permission for gradlew
+      run: chmod +x gradlew
+      
+    # (5) secret 파일 복사
+#     - name: Copy Secret
+#       env:
+#         OCCUPY_SECRET: ${{ secrets.DEV_RDS }}
+#         OCCUPY_SECRET_DIR: src/main/resources
+#         OCCUPY_SECRET_DIR_FILE_NAME: secret.yml
+#       run: echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
+      
+    # (6) 어플리케이션 빌드
+    - name: Test with Gradle # test application build
+      run: ./gradlew bootJar -Pjasypt.encryptor.password=${{secrets.JASYPT_PASSWORD}}
+
+    # (7) 도커 허브에 도커 이미지 푸시
+    - name: docker build and push
+      run: |
+        docker login -u ${{ secrets.DOCKER_HUB_ID }} -p ${{ secrets.DOCKER_HUB_PW }}
+        docker build -f Dockerfile -t groad .
+        docker tag groad ${{ secrets.DOCKER_HUB_ID }}/groad-server
+        docker push ${{ secrets.DOCKER_HUB_ID }}/groad-server
+        
+        
+    # (8) 도커 이미지 배포
+    - name: Deploy docker image
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST_IP }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_PEM_KEY }}
+        script: |
+            docker stop groad
+            docker rm groad
+            sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/groad-server
+            sudo docker-compose up -d
+            docker rmi -f $(docker images -f "dangling=true" -q)
