@@ -14,13 +14,12 @@ on:
       - "main"
       - "dev"
 
-permissions:
-  contents: read
+permissions: write-all
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     # (1) Check out
@@ -58,7 +57,7 @@ jobs:
       
     # (6) Test Application
     - name: Test with Gradle # test application build
-      run: ./gradlew test -Djasypt.encryptor.password=${{secrets.JASYPT_PASSWORD}}
+      run: ./gradlew test -Pjasypt.encryptor.password=${{secrets.JASYPT_PASSWORD}}
 
     # (7) Test Result Check
     - name: Publish Unit Test Results 
