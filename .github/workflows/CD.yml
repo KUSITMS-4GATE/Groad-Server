@@ -6,10 +6,10 @@ on:
       - "dev" 
       - "main"
   # 확인 후 삭제
-  pull_request:
-    branches: 
-      - "main"
-      - "dev"
+#  pull_request:
+#    branches: 
+#      - "main"
+#      - "dev"
 
 jobs:
   build:
