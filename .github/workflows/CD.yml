@@ -51,11 +51,11 @@ jobs:
 #       run: echo $OCCUPY_SECRET | base64 --decode > $OCCUPY_SECRET_DIR/$OCCUPY_SECRET_DIR_FILE_NAME
       
     # (6) 어플리케이션 빌드
-    - name: Test with Gradle # test application build
+    - name: Build with Gradle # test application build
       run: ./gradlew bootJar -Pjasypt.encryptor.password=${{secrets.JASYPT_PASSWORD}}
 
     # (7) 도커 허브에 도커 이미지 푸시
-    - name: docker build and push
+    - name: Docker build and push
       run: |
         docker login -u ${{ secrets.DOCKER_HUB_ID }} -p ${{ secrets.DOCKER_HUB_PW }}
         docker build -f Dockerfile -t groad .
