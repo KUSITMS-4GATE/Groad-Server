@@ -36,7 +36,6 @@ public class Review extends BaseTimeEntity {
 
     @Builder
     public Review(Long id, Long member_id, String contents) {
-        this.id = id;
         this.member_id = member_id;
         this.contents = contents;
     }
