@@ -3,6 +3,7 @@ package groad.groad_server.domain.review.entity;
 import groad.groad_server.domain.common.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Getter
 @Entity
 @Table(name = "review")
 @Where(clause = "deleted_at IS NULL")
@@ -35,8 +37,9 @@ public class Review extends BaseTimeEntity {
     private String contents;
 
     @Builder
-    public Review(Long id, Long member_id, String contents) {
+    public Review(Long member_id, String title, String contents) {
         this.member_id = member_id;
+        this.title = title;
         this.contents = contents;
     }
 }
