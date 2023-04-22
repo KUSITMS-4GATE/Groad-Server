@@ -51,6 +51,11 @@ dependencies {
 	// Swagger
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
+	//Redis
+	implementation 'org.springframework.boot:spring-boot-starter-redis'
+	implementation 'org.redisson:redisson-spring-boot-starter:3.20.0'
+
 }
 
 tasks.named('test') {
