@@ -1,0 +1,5 @@
+spring:
+  redis:
+    host: ENC(L3h1GsrY4MKQAi+NU9zxDu1wllnku5nr)
+    port: 6379
+    password: ENC(Hm4XFT5XWQsYJR9gxB5Y5Q==)
